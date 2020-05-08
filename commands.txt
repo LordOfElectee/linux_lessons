@@ -32,4 +32,4 @@ git add commands.txt
 git config --global user.email "ceron@mail.ru"
 git config --global user.name "Роман"
 git commit-am "первый коммит"
-git push
+git push --set-upstream origin branch1
