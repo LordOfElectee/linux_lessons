@@ -23,3 +23,13 @@ C:\WINDOWS\system32>ssh 192.168.56.101 -i C:/ssh_keys/id_rsa
 Теперь при подключении пароль не запрашивает.
 
 3. Git репозиторий я создал через GitHub. В командную строку вывел публичный ключ, скопировал, вставил на GitHub'е. Ветку создал,пул реквест тоже.
+
+git clone git@github.com:LordOfElectee/linux_lessons.git
+cd ~/linux_lessons/
+*создал этот файлик, всё сюда записал*
+git checkout -b branch1
+git add commands.txt
+git config --global user.email "ceron@mail.ru"
+git config --global user.name "Роман"
+git commit-am "первый коммит"
+git push
