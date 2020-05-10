@@ -1,0 +1,143 @@
+1)
+cd /tmp
+mkdir lesson3
+cd ./lesson3
+touch script
+nano script
+
+---
+#!/bin/bash
+#создаём директорию
+mkdir permissions
+cd ./permissions
+#создадим файл
+touch main.txt
+printf "some text here" > main.txt
+#создаём жесткую ссылку
+ln main.txt main_hl.txt
+#создаём символьную ссылку
+ln -s main.txt main_sl.txt
+#как создать ссылку на ссылку не знаю. Пишет не могу создать - файл существует
+cd /tmp/lesson3
+#выводим рекурсивно все папки и подпипки
+ls -laRi
+#как вывести содержимое всех файлов тоже не нашел
+#Иноды должны совпадать у жесткой сылки и файла. В других случаях нет. Т.к. в суть жесткой ссылки в том, что на один айнод несколько записей
+cd ./permissions
+mv main_hl.txt /tmp
+mv main_sl.txt /tmp
+cd /tmp
+ls -laRi
+
+---
+
+chmod -x script
+
+---
+
+2)
+Вывод:
+
+ceron@ceron-VirtualBox:/tmp/lesson3$ ./script
+.:
+итого 16
+ 2421 drwxrwxr-x  3 ceron ceron 4096 мая 10 11:43 .
+16385 drwxrwxrwt 15 root  root  4096 мая 10 10:46 ..
+ 5084 drwxrwxr-x  2 ceron ceron 4096 мая 10 11:43 permissions
+ 3315 -rwxrwxr-x  1 ceron ceron  964 мая 10 11:43 script
+
+./permissions:
+итого 16
+ 5084 drwxrwxr-x 2 ceron ceron 4096 мая 10 11:43 .
+ 2421 drwxrwxr-x 3 ceron ceron 4096 мая 10 11:43 ..
+ 5096 -rw-rw-r-- 2 ceron ceron   14 мая 10 11:43 main_hl.txt
+35229 lrwxrwxrwx 1 ceron ceron    8 мая 10 11:43 main_sl.txt -> main.txt
+ 5096 -rw-rw-r-- 2 ceron ceron   14 мая 10 11:43 main.txt
+.:
+итого 68
+16385 drwxrwxrwt 15 root  root  4096 мая 10 11:43 .
+    2 drwxr-xr-x 24 root  root  4096 мая  8 06:27 ..
+35215 -rw-------  1 ceron ceron    0 мая  9 19:30 config-err-WNUXeY
+ 1436 drwxrwxrwt  2 root  root  4096 мая  9 05:00 .font-unix
+  676 drwxrwxrwt  2 root  root  4096 мая  9 19:30 .ICE-unix
+ 2421 drwxrwxr-x  3 ceron ceron 4096 мая 10 11:43 lesson3
+ 5096 -rw-rw-r--  2 ceron ceron   14 мая 10 11:43 main_hl.txt
+35229 lrwxrwxrwx  1 ceron ceron    8 мая 10 11:43 main_sl.txt -> main.txt
+35222 drwx------  2 ceron ceron 4096 мая  9 19:30 ssh-3Kd4iBcvkYNH
+ 3788 drwx------  3 root  root  4096 мая  9 19:30 systemd-private-f209c5a8f2894adc8214824a90becffa-bolt.service-zYSDyG
+ 3894 drwx------  3 root  root  4096 мая  9 19:30 systemd-private-f209c5a8f2894adc8214824a90becffa-colord.service-HpwEcE
+ 2410 drwx------  3 root  root  4096 мая  9 19:31 systemd-private-f209c5a8f2894adc8214824a90becffa-fwupd.service-yie1dg
+ 2402 drwx------  3 root  root  4096 мая  9 05:00 systemd-private-f209c5a8f2894adc8214824a90becffa-ModemManager.service-vqD5mQ
+ 3329 drwx------  3 root  root  4096 мая  9 19:30 systemd-private-f209c5a8f2894adc8214824a90becffa-rtkit-daemon.service-pNQ9OZ
+ 1438 drwx------  3 root  root  4096 мая  9 05:00 systemd-private-f209c5a8f2894adc8214824a90becffa-systemd-resolved.service-hLc7c3
+ 1437 drwxrwxrwt  2 root  root  4096 мая  9 05:00 .Test-unix
+ 2572 -r--r--r--  1 gdm   gdm     11 мая  9 19:30 .X1024-lock
+  199 drwxrwxrwt  2 root  root  4096 мая  9 19:30 .X11-unix
+ 1279 drwxrwxrwt  2 root  root  4096 мая  9 05:00 .XIM-unix
+
+./.font-unix:
+итого 8
+ 1436 drwxrwxrwt  2 root root 4096 мая  9 05:00 .
+16385 drwxrwxrwt 15 root root 4096 мая 10 11:43 ..
+
+./.ICE-unix:
+итого 8
+  676 drwxrwxrwt  2 root  root  4096 мая  9 19:30 .
+16385 drwxrwxrwt 15 root  root  4096 мая 10 11:43 ..
+ 2419 srwxrwxrwx  1 gdm   gdm      0 мая  9 19:30 1031
+35225 srwxrwxrwx  1 ceron ceron    0 мая  9 19:30 1244
+
+./lesson3:
+итого 16
+ 2421 drwxrwxr-x  3 ceron ceron 4096 мая 10 11:43 .
+16385 drwxrwxrwt 15 root  root  4096 мая 10 11:43 ..
+ 5084 drwxrwxr-x  2 ceron ceron 4096 мая 10 11:43 permissions
+ 3315 -rwxrwxr-x  1 ceron ceron  964 мая 10 11:43 script
+
+./lesson3/permissions:
+итого 12
+5084 drwxrwxr-x 2 ceron ceron 4096 мая 10 11:43 .
+2421 drwxrwxr-x 3 ceron ceron 4096 мая 10 11:43 ..
+5096 -rw-rw-r-- 2 ceron ceron   14 мая 10 11:43 main.txt
+
+./ssh-3Kd4iBcvkYNH:
+итого 8
+35222 drwx------  2 ceron ceron 4096 мая  9 19:30 .
+16385 drwxrwxrwt 15 root  root  4096 мая 10 11:43 ..
+35224 srw-------  1 ceron ceron    0 мая  9 19:30 agent.1244
+ls: невозможно открыть каталог './systemd-private-f209c5a8f2894adc8214824a90becffa-bolt.service-zYSDyG': Отказано в доступе
+ls: невозможно открыть каталог './systemd-private-f209c5a8f2894adc8214824a90becffa-colord.service-HpwEcE': Отказано в доступе
+ls: невозможно открыть каталог './systemd-private-f209c5a8f2894adc8214824a90becffa-fwupd.service-yie1dg': Отказано в доступе
+ls: невозможно открыть каталог './systemd-private-f209c5a8f2894adc8214824a90becffa-ModemManager.service-vqD5mQ': Отказано в доступе
+ls: невозможно открыть каталог './systemd-private-f209c5a8f2894adc8214824a90becffa-rtkit-daemon.service-pNQ9OZ': Отказано в доступе
+ls: невозможно открыть каталог './systemd-private-f209c5a8f2894adc8214824a90becffa-systemd-resolved.service-hLc7c3': Отказано в доступе
+
+./.Test-unix:
+итого 8
+ 1437 drwxrwxrwt  2 root root 4096 мая  9 05:00 .
+16385 drwxrwxrwt 15 root root 4096 мая 10 11:43 ..
+
+./.X11-unix:
+итого 8
+  199 drwxrwxrwt  2 root  root  4096 мая  9 19:30 .
+16385 drwxrwxrwt 15 root  root  4096 мая 10 11:43 ..
+ 5094 srwxrwxrwx  1 ceron ceron    0 мая  9 19:30 X0
+ 2574 srwxrwxr-x  1 gdm   gdm      0 мая  9 19:30 X1024
+
+./.XIM-unix:
+итого 8
+ 1279 drwxrwxrwt  2 root root 4096 мая  9 05:00 .
+16385 drwxrwxrwt 15 root root 4096 мая 10 11:43 ..
+
+---
+
+Команды для удаления rm и rm -r
+
+3.
+Сценарий использования:
+используется для временной передачи прав пользователю, который запускает файл. Например, чтобы пользователю самостоятельно сменить пароль ему даётся root  в отношении passwd
+
+с помощью chmod права выдаются:
+$ chmod g+s developer
+
+
