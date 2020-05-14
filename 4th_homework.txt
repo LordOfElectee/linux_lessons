@@ -1,0 +1,29 @@
+1)
+sudo su
+#зашли под root
+useradd test_new -d /home/test_new -m -s /bin/bash -u 2001 -p `openssl passwd -6 'test'`
+usermod -aG sudo test_new
+#root@ceron-VirtualBox:/home/ceron# su test_new
+#To run a command as administrator (user "root"), use "sudo <command>".
+#See "man sudo_root" for details.
+#test_new@ceron-VirtualBox:/home/ceron$ id
+#uid=2001(test_new) gid=2001(test_new) группы=2001(test_new),27(sudo)
+
+2)
+groupadd developers
+useradd dev1 -d /home/dev1 -m -s /bin/bash -p `openssl passwd -6 'dev'` -g developers
+useradd dev2 -d /home/dev2 -m -s /bin/bash -p `openssl passwd -6 'dev'` -g developers
+mkdir /tmp/devdir
+sudo chmod 2775 /tmp/devdir
+sudo chown root:developers /tmp/devdir
+sudo mkdir /tmp/devdir/share_files
+#присваеваем sticky bit
+sudo chmod 1770 /tmp/devdir/share_files
+
+3)
+#!/bin/bash
+
+if grep 'web' /etc/passwd > /dev/null ; then echo "Такая группа есть!" ; cat /etc/group | grep web ; sudo groupadd web; echo "группа создана" ; fi
+if grep 'geekbrains' /etc/passwd > /dev/null ; then echo "Такая группа есть!" ; cat /etc/group | grep geekbrains ; sudo groupadd geekbrains; echo "группа создана" ; fi
+if grep 'rockstar' /etc/passwd/ > /dev/null ; then echo "такой пользователь есть!" ; usermod -u 143 -g web -G geekbrains ;
+  else echo "такого пользователя нет! создаём..." ; useradd rockstar -d /home/rockstar -m -s /bin/bash -p `openssl passwd -6 'star'` -u 143 -g web -G geekbrains ; echo "Пользователь создан!" ; fi
