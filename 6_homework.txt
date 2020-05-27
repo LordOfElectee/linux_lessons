@@ -1,0 +1,117 @@
+1)
+!/bin/bash
+
+usage(){
+  cat << EOF
+Этот скрипт удаляет все пустые строки и превращает буквы в заглавные
+Usage: $0 [file]
+EOF
+}
+
+cat $1 | tr -s '\n' | tr [:lower:] [:upper:]
+
+case $# in 
+    --help)
+        usage
+        exit 0
+    ;;
+    -*|--*)
+       ARGS+=("$1")
+       shift
+    ;;
+    *)
+       TEXT+=("-e $1")
+       shift
+    ;;
+    esac
+
+2)
+#!/bin/bash
+
+usage(){
+  cat << EOF
+Скрипт ищет ошибки авторизации в файле /var/log/auth.log
+Usage: $0
+EOF
+}
+
+case $1 in 
+    --help)
+        usage
+        exit 0
+    ;;
+    esac
+
+grep 'authentication failure' /var/log/auth.log
+
+3)
+#!/bin/bash
+
+usage(){
+  cat << EOF
+Скрипт создаёт файлы с расширением .sh в указанной директории. Создаёт до 7 файлов
+Путь в формате /dir/dir
+Usage: $0 -d [path] [file1-7]
+Examples:
+  $0 --help
+  $0 -d /tmp 1 2 3
+EOF
+}
+
+case "$1" in
+    --help)
+        usage
+        exit 0
+    ;;
+    -d)
+        echo "-d Есть"
+    ;;
+    *)
+        echo "2 параметр не -d. Обратитесь к --help"
+        exit 2
+    ;;
+    esac
+
+#проверяем, чтобы аргументов было не больше 9 (вместе с -d и путём)
+if [ $# -gt 9 ] ; then
+  echo "Файлов/аргументов больше 7. Обратитесь к --help"
+  exit 1
+fi
+
+#проверяем является ли вторая переменная путём
+if [[ $2 =~ ^'/'.*[^/]$ ]] ; then
+  echo "Путь есть"
+  else
+     echo "Ошибка неверно указан путь. Путь должен содержать /"
+     exit 2
+fi
+
+#проверяем чтобы файлы были указаны
+if [ -z $3 ] ; then
+  echo "Не указан файл. Обратитесь к справке --help"
+  exit 2
+        else
+        echo "Третий аргумент есть!"
+fi
+
+path=$2
+
+while [ $# -gt 2 ]
+do
+  if [[ $3 =~ '/' ]] ; then
+    echo "Ошибка: Название файла "$3" содержит /"
+    exit 3
+  fi
+
+  if test -f $path/$3 ; then
+    echo "Файл "$3" уже существует"
+  fi
+
+  sudo touch $path/$3
+  echo "Файл "$3" создан"
+  if [[ $3 =~ '.sh'$ ]] ; then
+    sudo chmod +x $path/$3
+  fi
+
+shift
+done
